@@ -1,0 +1,88 @@
+#include <iostream>
+#include <queue>
+#include <set>
+
+using namespace std;
+
+//----------------------------------------
+template <class T>
+class ObjectPool{
+public:
+    T* Allocate();
+    T* TryAllocate();
+    void Deallocate(T* object);
+    ObjectPool();
+    ~ObjectPool();
+private:
+    queue<T*> free;
+    set<T*> allocated;
+};
+//----------------------------------------
+template <class T>
+T* ObjectPool<T>::Allocate(){
+    if(free.empty()){
+        free.push(new T);
+    }
+    auto ret = free.front();
+    free.pop();
+    allocated.insert(ret);
+    return ret;
+}
+//----------------------------------------
+template <class T>
+T* ObjectPool<T>::TryAllocate(){
+    if(free.empty()){
+        return nullptr;
+    }
+    return Allocate();
+}
+//----------------------------------------
+template <class T>
+void ObjectPool<T>::Deallocate(T* object){
+    if(allocated.find(object) == allocated.end()){
+        throw invalid_argument("");
+    }
+    allocated.erase(object);
+    free.push(object);
+}
+//----------------------------------------
+template <class T>
+ObjectPool<T>::ObjectPool(){
+    cout << "OBJECTPOOL +++" << endl;
+}
+//----------------------------------------
+template <class T>
+ObjectPool<T>::~ObjectPool(){
+    cout << "OBJECTPOOL ---" << endl;
+    for(auto x : allocated){
+        delete x;
+    }
+    while(!free.empty()){
+        auto x = free.front();
+        free.pop();
+        delete x;
+    }
+}
+//----------------------------------------
+int counter = 0;
+int _last_mine = 0;
+//----------------------------------------
+struct _mine{
+    _mine() : _number(++_last_mine) {cout << "Mine # " << _number << " +++" << endl; counter++;}
+    ~_mine(){cout << "Mine # " << _number << " ---" << endl; counter--;}
+    int _number;
+};
+//----------------------------------------
+int main()
+{
+    ObjectPool<_mine> MyPool;
+    auto ptr1 = MyPool.Allocate();
+    auto ptr2 = MyPool.Allocate();
+    auto ptr3 = MyPool.Allocate();
+    MyPool.Deallocate(ptr2);
+    auto ptr4 = MyPool.Allocate();
+    auto ptr5 = MyPool.Allocate();
+
+    return 0;
+}
+//----------------------------------------

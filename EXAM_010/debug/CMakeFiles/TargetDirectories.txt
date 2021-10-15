@@ -1,0 +1,3 @@
+X:/01-MAXDOCS/Projects/QT/EXAM_XXX/debug/CMakeFiles/rebuild_cache.dir
+X:/01-MAXDOCS/Projects/QT/EXAM_XXX/debug/CMakeFiles/EXAM_XXX.dir
+X:/01-MAXDOCS/Projects/QT/EXAM_XXX/debug/CMakeFiles/edit_cache.dir

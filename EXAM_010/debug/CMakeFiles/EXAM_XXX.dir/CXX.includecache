@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+X:/01-MAXDOCS/Projects/QT/EXAM_XXX/main.cpp
+iostream
+-
+algorithm
+-
+vector
+-
+fstream
+-
+
